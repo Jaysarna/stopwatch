@@ -10,14 +10,6 @@ const initialState = {
 class Stopwatch extends Component {
   state = initialState
 
-  componentWillUnmount() {
-    this.clearTimerInterval()
-  }
-
-  clearTimerInterval = () => {
-    clearInterval(this.intervalId)
-  }
-
   incrementalTimer = () => {
     this.setState = prevState => ({
       timeElapsedInSeconds: prevState.timeElapsedInSeconds + 1,
@@ -26,7 +18,7 @@ class Stopwatch extends Component {
 
   onStart = () => {
     const {runningStatus} = this.state
-    if (runningStatus === false) {
+    if (runningStatus) {
       this.intervalId = setInterval(this.incrementalTimer, 1000)
     }
     this.setState({runningStatus: true})
@@ -35,14 +27,14 @@ class Stopwatch extends Component {
   onStop = () => {
     const {runningStatus} = this.state
     if (runningStatus) {
-      this.clearTimerInterval()
+      clearInterval(this.intervalId)
       this.setState({runningStatus: false})
     }
   }
 
   onReset = () => {
     this.setState(initialState)
-    this.clearTimerInterval()
+    clearInterval(this.intervalId)
   }
 
   getElapsedSecondsInTimeFormat = () => {
